@@ -26,18 +26,18 @@ public class ComposePage {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    public void login(String username, String password) {
+    public void login() {
         driver.get("https://mail.google.com/");
         
         // Enter username
         WebElement emailField = wait.until(ExpectedConditions.elementToBeClickable(By.id("identifierId")));
-        emailField.sendKeys(username);
-        WebElement nextButton = driver.findElement(By.id("identifierNext"));
+        emailField.sendKeys("emaildemoincubyte@gmail.com");
+        WebElement nextButton = driver.findElement(By.cssSelector("#identifierNext > div > button > span"));
         nextButton.click();
         
         // Enter password
-        WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.name("password")));
-        passwordField.sendKeys(password);
+        WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='password']/div[1]/div/div[1]/input")));
+        passwordField.sendKeys("demoPassword123");
         WebElement passwordNextButton = driver.findElement(By.id("passwordNext"));
         passwordNextButton.click();
         
@@ -60,9 +60,9 @@ public class ComposePage {
         bodyField.sendKeys(body);
     }
 
-    public void enterRecipient(String recipientEmail) {
+    public void enterRecipient() {
         WebElement toField = wait.until(ExpectedConditions.elementToBeClickable(By.name("to")));
-        toField.sendKeys(recipientEmail);
+        toField.sendKeys("gursheeshnarang2001@gmail.com");
     }
 
     public void clickSend() {
@@ -71,7 +71,7 @@ public class ComposePage {
     }
 
     public void verifyEmailSent() {
-        WebElement confirmation = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'Message sent')]")));
+        WebElement confirmation = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\":b\"]/div/div/div[2]/span/span[1]")));
         if (confirmation.isDisplayed()) {
             System.out.println("Email sent confirmation displayed.");
         } else {
@@ -80,7 +80,7 @@ public class ComposePage {
     }
 
     public void verifyEmailInSentItems(String subject) {
-        WebElement sentItemsLink = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, '#sent')]")));
+        WebElement sentItemsLink = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Sent")));
         sentItemsLink.click();
         
         List<WebElement> sentEmails = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[@class='bog' and text()='" + subject + "']")));
